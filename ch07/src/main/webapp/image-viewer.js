@@ -21,13 +21,15 @@ imageViewer = {
 		console.log(selectImg, selectName);
 	},
 	_startShow: function() {
-		if (!this._intevalId) {
+		if (this._intevalId === null) {
 			this._intevalId = setInterval(function() {
 				imageViewer._changeImage();
 			}, 1000);
 			$('#btn-slideshow').text('슬라이드쇼 중지');
 		} else {
-			clearInterval(this._intevalId);
+			if (this._intevalId !== null) {
+				clearInterval(this._intevalId);
+			}
 			$('#btn-slideshow').text('슬라이드쇼 시작');
 			this._intevalId = null;
 		}
