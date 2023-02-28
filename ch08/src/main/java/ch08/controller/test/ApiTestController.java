@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/test")
 public class ApiTestController {
-
 	@RequestMapping("/text")
 	public String text() {
 		return "text";
@@ -26,4 +25,10 @@ public class ApiTestController {
 	public String json01() {
 		return "json01";
 	}
+
+	@RequestMapping("/json02")
+	public String json02() {
+		return "json02";
+	}
+
 }
