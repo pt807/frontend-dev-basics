@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,49 +9,51 @@
 <title>Insert title here</title>
 <script src="${pageContext.request.contextPath }/jquery/jquery-3.6.0.js"></script>
 <script>
-	var render = function(vo) {
-		var htmls = '';
-		htmls = "<li data-no=''>" +
-					"<strong>" + vo.name + "</strong>" +
-					"<p>" + vo.message + "</p>" +
-					"<strong></strong>" +
-					"<a href='' data-no=''>삭제</a>" +
-				"</li>";
+var render = function(vo) {
+	var htmls = 
+		"<li data-no=''>" +
+		"	<strong>" + vo.name + "</strong>" +
+		"	<p>" + vo.message + "</p>" +
+		"	<strong></strong>" +
+		"	<a href='' data-no=''>삭제</a>" + 
+		"</li>";
+	
+		$("#list-guestbook")[mode? "prepend" : "append"](htmls);
+}
+$(function() {
+	
+	$("#add-form").submit(function(event){
+		event.preventDefault();
 		
-		$('#list-guestbook').prepend(htmls);
-	}
-	$(function(){
-		$('#add-form').submit(function(event) {
-			event.preventDefault();
-			
-			// form serialization
-			var vo = {};
-			vo.name = $('#input-name').val();
-			vo.password = $('#input-password').val();
-			vo.message = $('#tx-content').val();
-			
-			/* validation & messagebox */
-			
-			$.ajax({
-				url: '/ch08/guestbook/api',
-				type: 'post',
-				dataType: 'json',
-				contentType: 'application/json',
-				data: JSON.stringify(vo),
-				success: function(response) {
-					if(response.result === 'fail'){
-						console.error(response.message);
-						return;
-					}
-					render(response.data);
+		// form serialization
+		var vo = {};
+		vo.name = $("#input-name").val();
+		vo.password = $("#input-password").val();
+		vo.message = $("#tx-content").val();
+		
+		/* validation & messagebox */
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/guestbook/api",
+			type: "post",
+			dataType: "json",
+			contentType: "application/json",
+			data: JSON.stringify(vo),
+			success: function(response) { 
+				if(response.result === 'fail') {
+					console.error(response.message);
+					return;
 				}
-			});
+				
+				render(response.data, true);
+			}
 		});
-	})
+	});
+})
 </script>
 </head>
 <body>
-	<div id="guestbook">
+			<div id="guestbook">
 				<h1>방명록</h1>
 				<form id="add-form" action="" method="post">
 					<input type="text" id="input-name" placeholder="이름">
@@ -91,21 +92,7 @@
 						<strong></strong>
 						<a href='' data-no=''>삭제</a> 
 					</li>
-					
-									
 				</ul>
 			</div>
-			<div id="dialog-delete-form" title="메세지 삭제" style="display:none">
-  				<p class="validateTips normal">작성시 입력했던 비밀번호를 입력하세요.</p>
-  				<p class="validateTips error" style="display:none">비밀번호가 틀립니다.</p>
-  				<form>
- 					<input type="password" id="password-delete" value="" class="text ui-widget-content ui-corner-all">
-					<input type="hidden" id="hidden-no" value="">
-					<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-  				</form>
-			</div>
-			<div id="dialog-message" title="" style="display:none">
-  				<p></p>
-			</div>				
 </body>
 </html>

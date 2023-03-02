@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/test/gb")
 public class GuestbookTestController {
+
 	// add
 	@RequestMapping("/ex01")
 	public String ex01() {
@@ -23,4 +24,5 @@ public class GuestbookTestController {
 	public String ex03() {
 		return "gb/ex03";
 	}
+
 }
